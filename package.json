@@ -16,7 +16,10 @@
     "build": "gulp build --production",
     "dev": "gulp",
     "test": "gulp test",
-    "tdd": "gulp tdd"
+    "tdd": "gulp tdd",
+    "preupdate-webdriver": "npm install",
+    "update-webdriver": "webdriver-manager update",
+    "protractor": "protractor test/protractor.conf.js"
   },
   "dependencies": {},
   "devDependencies": {
@@ -43,6 +46,7 @@
     "karma-phantomjs-launcher": "^1.0.0",
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.6",
+    "protractor": "^3.2.1",
     "rimraf": "^2.4.1",
     "run-sequence": "^1.1.1",
     "yargs": "^3.15.0"

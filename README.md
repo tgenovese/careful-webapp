@@ -6,6 +6,7 @@ Also used during development:
 - [Chai](http://chaijs.com) for the test assertions
 - [Mocha](http://mochajs.org) as the test framework
 - [Karma](http://karma-runner.github.io) to run unit tests in browsers
+- [Protractor](http://www.protractortest.org) to run end-2-end tests
 
 ## Get Started
 
@@ -43,4 +44,20 @@ Watch the source and test files and run the unit tests on changes:
 
 ```bash
 npm run tdd
+```
+
+## End 2 End Testing
+
+Start the full application (back-end and front-end).
+
+As a one-time setup, download webdriver:
+
+```bash
+npm run update-webdriver
+```
+
+Start the Protractor test runner using the e2e configuration:
+
+```bash
+npm run protractor
 ```
