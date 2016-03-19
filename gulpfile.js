@@ -12,6 +12,8 @@
 var $ = require('gulp-load-plugins')();
 var argv = require('yargs').argv;
 var gulp = require('gulp');
+var karma = require('karma');
+var path = require('path');
 var rimraf = require('rimraf');
 var router = require('front-router');
 var sequence = require('run-sequence');
@@ -146,6 +148,21 @@ gulp.task('uglify:app', function() {
     .pipe($.concat('app.js'))
     .pipe(gulp.dest('./build/assets/js/'))
   ;
+});
+
+// Run unit tests once
+gulp.task('test', function(done) {
+  new karma.Server({
+    configFile: path.join(__dirname, 'test/karma.conf.js'),
+    singleRun: true
+  }, done).start();
+});
+
+// Watch for file changes and re-run tests on each change
+gulp.task('tdd', function(done) {
+  new karma.Server({
+    configFile: path.join(__dirname, 'test/karma.conf.js')
+  }, done).start();
 });
 
 // Starts a test server, which you can view at http://localhost:8079
