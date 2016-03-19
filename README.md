@@ -23,5 +23,5 @@ This will compile the Sass and assemble the Angular app. The appropriate Gulp ta
 To run the compiling process once, without watching any files, use the `build` command.
 
 ```bash
-npm build
+npm run build
 ```

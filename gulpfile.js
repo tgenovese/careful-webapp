@@ -2,18 +2,22 @@
 // -------------------------------------
 // This file processes all of the assets in the "client" folder, combines them with the Foundation for Apps assets, and outputs the finished files in the "build" folder as a finished app.
 
+/* eslint-env node */
+
+'use strict';
+
 // 1. LIBRARIES
 // - - - - - - - - - - - - - - -
 
-var $        = require('gulp-load-plugins')();
-var argv     = require('yargs').argv;
-var gulp     = require('gulp');
-var rimraf   = require('rimraf');
-var router   = require('front-router');
+var $ = require('gulp-load-plugins')();
+var argv = require('yargs').argv;
+var gulp = require('gulp');
+var rimraf = require('rimraf');
+var router = require('front-router');
 var sequence = require('run-sequence');
 
 // Check for --production flag
-var isProduction = !!(argv.production);
+var isProduction = Boolean(argv.production);
 
 // 2. FILE PATHS
 // - - - - - - - - - - - - - - -
@@ -46,7 +50,7 @@ var paths = {
   appJS: [
     'client/assets/js/app.js'
   ]
-}
+};
 
 // 3. TASKS
 // - - - - - - - - - - - - - - -
@@ -98,13 +102,13 @@ gulp.task('copy:foundation', function(cb) {
 });
 
 // Compiles Sass
-gulp.task('sass', function () {
+gulp.task('sass', function() {
   var minifyCss = $.if(isProduction, $.minifyCss());
 
   return gulp.src('client/assets/scss/app.scss')
     .pipe($.sass({
       includePaths: paths.sass,
-      outputStyle: (isProduction ? 'compressed' : 'nested'),
+      outputStyle: isProduction ? 'compressed' : 'nested',
       errLogToConsole: true
     }))
     .pipe($.autoprefixer({
@@ -116,12 +120,12 @@ gulp.task('sass', function () {
 });
 
 // Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
-gulp.task('uglify', ['uglify:foundation', 'uglify:app'])
+gulp.task('uglify', ['uglify:foundation', 'uglify:app']);
 
-gulp.task('uglify:foundation', function(cb) {
+gulp.task('uglify:foundation', function() {
   var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
+    .on('error', function(e) {
+      throw e;
     }));
 
   return gulp.src(paths.foundationJS)
@@ -133,8 +137,8 @@ gulp.task('uglify:foundation', function(cb) {
 
 gulp.task('uglify:app', function() {
   var uglify = $.if(isProduction, $.uglify()
-    .on('error', function (e) {
-      console.log(e);
+    .on('error', function(e) {
+      throw e;
     }));
 
   return gulp.src(paths.appJS)
@@ -163,7 +167,7 @@ gulp.task('build', function(cb) {
 });
 
 // Default task: builds your app, starts a server, and recompiles assets when they change
-gulp.task('default', ['server'], function () {
+gulp.task('default', ['server'], function() {
   // Watch Sass
   gulp.watch(['./client/assets/scss/**/*', './scss/**/*'], ['sass']);
 
