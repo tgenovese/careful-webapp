@@ -1,0 +1,23 @@
+{
+  "name": "careful-webapp",
+  "version": "1.0.0",
+  "description": "Web front-end for the Careful application",
+  "homepage": "https://github.com/tgenovese/careful-webapp#readme",
+  "bugs": {
+    "url": "https://github.com/tgenovese/careful-webapp/issues"
+  },
+  "license": "MIT",
+  "author": "Thierry Genovese",
+  "main": "",
+  "repository": "tgenovese/careful-webapp",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "eslint": "^2.4.0",
+    "eslint-config-tge": "^1.0.1"
+  },
+  "private": true
+}

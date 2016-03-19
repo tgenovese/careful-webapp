@@ -1,0 +1,21 @@
+{
+  "name": "careful-webapp",
+  "description": "Web front-end for the Careful application",
+  "main": "",
+  "authors": [
+    "Thierry Genovese"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/tgenovese/careful-webapp",
+  "moduleType": [
+    "globals"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
