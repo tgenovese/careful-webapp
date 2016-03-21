@@ -10,16 +10,18 @@
 // - - - - - - - - - - - - - - -
 
 var $ = require('gulp-load-plugins')();
-var argv = require('yargs').argv;
 var gulp = require('gulp');
 var karma = require('karma');
 var path = require('path');
 var rimraf = require('rimraf');
 var router = require('front-router');
 var sequence = require('run-sequence');
+var addStream = require('add-stream');
+var appConfig = require('rc')('careful', {WS_ROOT: '/ws'}, []);
 
-// Check for --production flag
-var isProduction = Boolean(argv.production);
+var environment = process.env.NODE_ENV || 'development';
+var isProduction = environment === 'production';
+
 
 // 2. FILE PATHS
 // - - - - - - - - - - - - - - -
@@ -35,8 +37,8 @@ var paths = {
     'client/assets/scss',
     'bower_components/foundation-apps/scss'
   ],
-  // These files include Foundation for Apps and its dependencies
-  foundationJS: [
+  dependenciesJS: [
+    // Foundation for Apps and its dependencies
     'bower_components/fastclick/lib/fastclick.js',
     'bower_components/viewport-units-buggyfill/viewport-units-buggyfill.js',
     'bower_components/tether/tether.js',
@@ -50,7 +52,7 @@ var paths = {
   ],
   // These files are for your app's JavaScript
   appJS: [
-    'client/assets/js/app.js'
+    'client/assets/js/**/*.js'
   ]
 };
 
@@ -122,17 +124,17 @@ gulp.task('sass', function() {
 });
 
 // Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
-gulp.task('uglify', ['uglify:foundation', 'uglify:app']);
+gulp.task('uglify', ['uglify:dependencies', 'uglify:app']);
 
-gulp.task('uglify:foundation', function() {
+gulp.task('uglify:dependencies', function() {
   var uglify = $.if(isProduction, $.uglify()
     .on('error', function(e) {
       throw e;
     }));
 
-  return gulp.src(paths.foundationJS)
+  return gulp.src(paths.dependenciesJS)
     .pipe(uglify)
-    .pipe($.concat('foundation.js'))
+    .pipe($.concat('dependencies.js'))
     .pipe(gulp.dest('./build/assets/js/'))
   ;
 });
@@ -143,7 +145,17 @@ gulp.task('uglify:app', function() {
       throw e;
     }));
 
+  var makeConfig = function() {
+    return $.ngConstant({
+      name: 'app.config',
+      constants: appConfig[environment] || appConfig,
+      stream: true,
+      wrap: true
+    });
+  };
+
   return gulp.src(paths.appJS)
+    .pipe(addStream.obj(makeConfig()))
     .pipe(uglify)
     .pipe($.concat('app.js'))
     .pipe(gulp.dest('./build/assets/js/'))

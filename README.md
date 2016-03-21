@@ -48,7 +48,11 @@ npm run tdd
 
 ## End 2 End Testing
 
-Start the full application (back-end and front-end).
+Start the full application (back-end and front-end) in "e2e" mode:
+
+```bash
+npm run e2e
+```
 
 As a one-time setup, download webdriver:
 

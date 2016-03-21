@@ -1,0 +1,8 @@
+{
+  "development": {
+    "WS_ROOT": "http://localhost:1337"
+  },
+  "test": {
+    "WS_ROOT": "http://localhost:5678"
+  }
+}
