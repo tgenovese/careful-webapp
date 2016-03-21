@@ -29,6 +29,7 @@ var isProduction = environment === 'production';
 var paths = {
   assets: [
     './client/**/*.*',
+    '!./client/i18n/**/*.*',
     '!./client/templates/**/*.*',
     '!./client/assets/{scss,js}/**/*.*'
   ],
@@ -48,7 +49,10 @@ var paths = {
     'bower_components/angular-ui-router/release/angular-ui-router.js',
     'bower_components/foundation-apps/js/vendor/**/*.js',
     'bower_components/foundation-apps/js/angular/**/*.js',
-    '!bower_components/foundation-apps/js/angular/app.js'
+    '!bower_components/foundation-apps/js/angular/app.js',
+    // Other dependencies beside Foundation for Apps
+    'bower_components/angular-sanitize/angular-sanitize.js',
+    'bower_components/angular-translate/angular-translate.js'
   ],
   // These files are for your app's JavaScript
   appJS: [
@@ -123,9 +127,9 @@ gulp.task('sass', function() {
   ;
 });
 
-// Compiles and copies the Foundation for Apps JavaScript, as well as your app's custom JS
 gulp.task('uglify', ['uglify:dependencies', 'uglify:app']);
 
+// Compiles and copies the Foundation for Apps JavaScript
 gulp.task('uglify:dependencies', function() {
   var uglify = $.if(isProduction, $.uglify()
     .on('error', function(e) {
@@ -139,6 +143,7 @@ gulp.task('uglify:dependencies', function() {
   ;
 });
 
+// Compiles and copies our JavaScript. Adds the app.config and app.translations modules.
 gulp.task('uglify:app', function() {
   var uglify = $.if(isProduction, $.uglify()
     .on('error', function(e) {
@@ -154,8 +159,21 @@ gulp.task('uglify:app', function() {
     });
   };
 
+  var makeTranslations = function() {
+    return gulp.src('client/i18n/**/*.json')
+    .pipe($.angularTranslate({
+      module: 'app.translations'
+    }))
+    .pipe($.iife({
+      prependSemicolon: false,
+      params: ['angular', 'undefined'],
+      args: ['angular']
+    }));
+  };
+
   return gulp.src(paths.appJS)
     .pipe(addStream.obj(makeConfig()))
+    .pipe(addStream.obj(makeTranslations()))
     .pipe(uglify)
     .pipe($.concat('app.js'))
     .pipe(gulp.dest('./build/assets/js/'))
@@ -205,6 +223,9 @@ gulp.task('default', ['server'], function() {
 
   // Watch static files
   gulp.watch(['./client/**/*.*', '!./client/templates/**/*.*', '!./client/assets/{scss,js}/**/*.*'], ['copy']);
+
+  // Watch i18n files
+  gulp.watch(['./client/i18n/**/*.json'], ['uglify:app']);
 
   // Watch app templates
   gulp.watch(['./client/templates/**/*.html'], ['copy:templates']);
