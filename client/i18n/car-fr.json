@@ -1,0 +1,11 @@
+{
+  "car": {
+    "make": "Constructeur",
+    "model": "Modèle",
+    "firstRegistration": "M.E.C",
+    "boughtOn": "Achetée le",
+    "initialMileage": "Km initial",
+    "soldOn": "Vendue le",
+    "distance": "Distance"
+  }
+}

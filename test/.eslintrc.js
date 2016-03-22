@@ -13,8 +13,8 @@ module.exports = {
     'no-unused-vars': [2, {
       vars: 'all',
       args: 'after-used',
-      varsIgnorePattern: '_$',
-      argsIgnorePattern: '_$'
+      varsIgnorePattern: '^[^_].*_$',
+      argsIgnorePattern: '^[^_].*_$' // keep warning for _foo_ (see ngMock)
     }],
     // No need in tests
     'require-jsdoc': 0,
