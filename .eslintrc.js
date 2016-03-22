@@ -7,6 +7,7 @@ module.exports = {
   },
   globals: {
     angular: false,
-    FastClick: false
+    FastClick: false,
+    moment: false
   }
 };

@@ -11,4 +11,13 @@ describe('Car list view', function() {
     expect(carList).to.eventually.have.length(2);
   });
 
+  it('should render car specific links', function() {
+    element.all(by.repeater('car in vm.cars'))
+      .first()
+      .element(by.css('a'))
+      .click();
+
+    expect(browser.getLocationAbsUrl()).to.eventually.equal('/car/detail/1');
+  });
+
 });

@@ -47,7 +47,7 @@
       })
       .fallbackLanguage('fr')
       .determinePreferredLanguage()
-      .useSanitizeValueStrategy('sanitize');
+      .useSanitizeValueStrategy('sanitizeParameters');
   }
 
   function run() {

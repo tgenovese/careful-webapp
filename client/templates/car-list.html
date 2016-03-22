@@ -7,7 +7,9 @@ controller: CarListController as vm
   <div class="grid-block small-up-1 medium-up-2 large-up-3" style="margin-top: 1rem">
     <div class="grid-content" ng-repeat="car in vm.cars">
       <div class="card">
-        <img ng-src="{{car.picture}}">
+        <a ui-sref="car.detail({id: car.id})">
+          <img ng-src="{{car.picture}}">
+        </a>
         <div class="card-divider">{{car.description}}</div>
         <div class="card-section" style="padding-bottom: 0">
           <div class="grid-block small-up-2">

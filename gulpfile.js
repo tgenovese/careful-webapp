@@ -53,7 +53,8 @@ var paths = {
     // Other dependencies beside Foundation for Apps
     'bower_components/angular-resource/angular-resource.js',
     'bower_components/angular-sanitize/angular-sanitize.js',
-    'bower_components/angular-translate/angular-translate.js'
+    'bower_components/angular-translate/angular-translate.js',
+    'bower_components/moment/moment.js'
   ],
   // These files are for your app's JavaScript
   appJS: [
