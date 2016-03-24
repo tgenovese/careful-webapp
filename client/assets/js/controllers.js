@@ -1,12 +1,27 @@
 (function(angular, moment) {
   'use strict';
 
-  var carefulCtrls = angular.module('controllers', ['foundation.core', 'services']);
+  var carefulCtrls = angular.module('controllers', ['pascalprecht.translate', 'foundation.core', 'services']);
 
   carefulCtrls.controller('CarListController', CarListController);
-  CarListController.$inject = ['Car'];
-  function CarListController(Car) {
+  CarListController.$inject = ['FoundationApi', 'Car'];
+  function CarListController(FoundationApi, Car) {
+    var vm = this;
     this.cars = Car.query({sort: 'boughtOn'});
+
+    this.newCar = {
+      firstRegistration: moment().utc().startOf('year').subtract(10, 'years').toDate(),
+      boughtOn: moment().utc().startOf('month').toDate(),
+      initialMileage: 100000,
+      stillMine: true
+    };
+
+    this.addCar = function addCar() {
+      return Car.save(this.newCar, function() {
+        vm.cars = Car.query({sort: 'boughtOn'});
+        FoundationApi.closeActiveElements('newCarModal');
+      });
+    };
   }
 
   carefulCtrls.controller('CarDetailController', CarDetailController);

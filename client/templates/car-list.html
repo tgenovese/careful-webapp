@@ -3,45 +3,143 @@ name: car.list
 url: /list
 controller: CarListController as vm
 ---
-<div class="grid-container">
-  <div class="grid-block small-up-1 medium-up-2 large-up-3" style="margin-top: 1rem">
-    <div class="grid-content" ng-repeat="car in vm.cars">
-      <div class="card">
-        <a ui-sref="car.detail({id: car.id})">
-          <img ng-src="{{car.picture}}">
-        </a>
-        <div class="card-divider">{{car.description}}</div>
-        <div class="card-section" style="padding-bottom: 0">
-          <div class="grid-block small-up-2">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.make' | translate}}"></div>
-            <div class="grid-content">{{car.make}}</div>
-          </div>
-          <div class="grid-block small-up-2">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.model' | translate}}"></div>
-            <div class="grid-content">{{car.model}}</div>
-          </div>
-          <div class="grid-block small-up-2">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.firstRegistration' | translate}}"></div>
-            <div class="grid-content">{{car.firstRegistration | date : 'mediumDate'}}</div>
-          </div>
-          <div class="grid-block small-up-2">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.boughtOn' | translate}}"></div>
-            <div class="grid-content">{{car.boughtOn | date : 'mediumDate'}}</div>
-          </div>
-          <div class="grid-block small-up-2" ng-if="!car.finalMileage">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.initialMileage' | translate}}"></div>
-            <div class="grid-content">{{car.initialMileage}}&nbsp;km</div>
-          </div>
-          <div class="grid-block small-up-2" ng-if="car.soldOn">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.soldOn' | translate}}"></div>
-            <div class="grid-content">{{car.soldOn | date : 'mediumDate'}}</div>
-          </div>
-          <div class="grid-block small-up-2" ng-if="car.finalMileage">
-            <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.distance' | translate}}"></div>
-            <div class="grid-content">{{car.finalMileage - car.initialMileage}}&nbsp;km</div>
-          </div>
+<div class="grid-frame vertical">
+  <!-- Menu -->
+  <div class="grid-block menu-group primary shrink">
+    <div class="menu-group-left">
+      <ul class="menu-bar">
+        <li><a ui-sref="car.list"><strong>Careful</strong></a></li>
+      </ul>
+    </div>
+    <div class="menu-group-right">
+      <ul class="menu-bar">
+        <li><a href="#" zf-open="newCarModal">
+          <img zf-iconic="" icon="cog" size="small" class="iconic-color-primary" style="margin: 0">
+        </a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div zf-modal="" id="newCarModal" class="collapse">
+    <form>
+      <div class="grid-block wrap" style="padding-top: 1rem;">
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.make"></span>
+            <input type="text" ng-model="vm.newCar.make">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.model"></span>
+            <input type="text" ng-model="vm.newCar.model">
+          </label>
+        </div>
+        <div class="grid-content medium-12">
+          <label>
+            <span translate="car.description"></span>
+            <input type="text" ng-model="vm.newCar.description">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.firstRegistration"></span>
+            <input type="date" ng-model="vm.newCar.firstRegistration"
+                ng-model-options="{timezone: 'UTC'}" placeholder="yyyy-MM-dd">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.registrationNumber"></span>
+            <input type="text" ng-model="vm.newCar.registrationNumber">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.boughtOn"></span>
+            <input type="date" ng-model="vm.newCar.boughtOn"
+                ng-model-options="{timezone: 'UTC'}" placeholder="yyyy-MM-dd">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.initialMileage"></span>
+            <span class="inline-label">
+              <input type="number" min=0 step="any" ng-model="vm.newCar.initialMileage">
+              <span class="form-label">km</span>
+            </span>
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.soldOn"></span>
+            <span class="float-right v-align">
+              <input type="checkbox" ng-model="vm.newCar.stillMine">
+              <span style="margin-left: 0.25rem" translate="car.stillMine"></span>
+            </span>
+            <input type="date" ng-model="vm.newCar.soldOn"
+                ng-model-options="{timezone: 'UTC'}" placeholder="yyyy-MM-dd"
+                ng-disabled="vm.newCar.stillMine">
+          </label>
+        </div>
+        <div class="grid-content medium-6">
+          <label>
+            <span translate="car.finalMileage"></span>
+            <span class="inline-label">
+              <input type="number" min=0 step="any"
+                  ng-model="vm.newCar.finalMileage" ng-disabled="vm.newCar.stillMine">
+              <span class="form-label">km</span>
+            </span>
+          </label>
+        </div>
+        <div class="grid-content medium-12">
+          <a class="button" ng-click="vm.addCar()" translate="common.add"></a>
+          <a zf-close="" class="secondary button" translate="common.cancel"></a>
         </div>
       </div>
+    </form>
+  </div>
+
+  <!-- Cards -->
+  <div class="grid-block wrap" style="margin-top: 1rem">
+    <div class="grid-content large-3 medium-6 small-12" ng-repeat="car in vm.cars">
+      <a ui-sref="car.detail({id: car.id})">
+        <div class="card">
+          <img ng-src="{{car.picture}}" ng-if="car.picture">
+          <div class="card-divider">{{car.description}}</div>
+          <div class="card-section" style="padding-bottom: 0">
+            <div class="grid-block small-up-2">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.make' | translate}}"></div>
+              <div class="grid-content">{{car.make}}</div>
+            </div>
+            <div class="grid-block small-up-2">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.model' | translate}}"></div>
+              <div class="grid-content">{{car.model}}</div>
+            </div>
+            <div class="grid-block small-up-2">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.firstRegistration' | translate}}"></div>
+              <div class="grid-content">{{car.firstRegistration | date : 'mediumDate'}}</div>
+            </div>
+            <div class="grid-block small-up-2">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.boughtOn' | translate}}"></div>
+              <div class="grid-content">{{car.boughtOn | date : 'mediumDate'}}</div>
+            </div>
+            <div class="grid-block small-up-2" ng-if="!car.finalMileage">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.initialMileage' | translate}}"></div>
+              <div class="grid-content">{{car.initialMileage}}&nbsp;km</div>
+            </div>
+            <div class="grid-block small-up-2" ng-if="car.soldOn">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.soldOn' | translate}}"></div>
+              <div class="grid-content">{{car.soldOn | date : 'mediumDate'}}</div>
+            </div>
+            <div class="grid-block small-up-2" ng-if="car.finalMileage">
+              <div class="grid-content" translate="common.colonize" translate-value-msg="{{'car.distance' | translate}}"></div>
+              <div class="grid-content">{{car.finalMileage - car.initialMileage}}&nbsp;km</div>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
 </div>

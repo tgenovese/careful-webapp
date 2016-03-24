@@ -9,5 +9,9 @@ module.exports = {
     angular: false,
     FastClick: false,
     moment: false
+  },
+  "rules": {
+    // vm for "view model" is common in angular apps
+    'consistent-this': [2, 'self', 'vm']
   }
 };

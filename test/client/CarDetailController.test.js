@@ -66,7 +66,7 @@ describe('CarDetailController', function() {
   it('addFillUp should POST new fillUp', function() {
     $httpBackend.expectRoute('POST', WS_ROOT + '/car/:id/fillUps');
     var ctrl_ = createController();
-    var car = ctrl_.addFillUp(ctrl_.fillUp);
+    var car = ctrl_.addFillUp();
     $httpBackend.flush();
     expect(car.id).to.equal($stateParams.id);
   });

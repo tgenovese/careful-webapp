@@ -2,10 +2,14 @@
   "car": {
     "make": "Constructeur",
     "model": "Modèle",
-    "firstRegistration": "M.E.C",
+    "description": "Description",
+    "firstRegistration": "1ère M.E.C",
     "boughtOn": "Achetée le",
     "initialMileage": "Km initial",
+    "registrationNumber": "Numéro d'immatriculation",
+    "stillMine": "Toujours à moi",
     "soldOn": "Vendue le",
+    "finalMileage": "Km final",
     "distance": "Distance"
   }
 }
